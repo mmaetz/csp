@@ -24,12 +24,12 @@ main () {
 	std::uniform_real_distribution<double> en(0,1);
 	std::uniform_int_distribution<> pos(0,N-1);
 
-	std::vector< std::vector<std::vector<bool> > > cluster(N, std::vector< std::vector<bool> >(N, std::vector<bool>(N)));
+	std::vector< std::vector<std::vector<char> > > cluster(N, std::vector< std::vector<char> >(N, std::vector<char>(N)));
 
 
 
 	initalize(cluster, seed_occ, p);
-	int steps = pow(10, 3);
+	const int steps = pow(10, 3);
 	int i,j,k;
 
 ////	 ferromagnetism 1 or -1

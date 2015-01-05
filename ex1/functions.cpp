@@ -4,7 +4,7 @@
 #include <iostream>
 #define N 100             //Lateral number of cells
 
-void initalize(std::vector< std::vector< std::vector<bool> > >& cluster, const int seed, const double p)
+void initalize(std::vector< std::vector< std::vector<char> > >& cluster, const int seed, const double p)
 {
 	int icounter;
 	int jcounter;
@@ -24,13 +24,13 @@ void initalize(std::vector< std::vector< std::vector<bool> > >& cluster, const i
 					cluster[icounter][jcounter][kcounter]=1;
 				}
 				else
-					cluster[icounter][jcounter][kcounter]=0;
+					cluster[icounter][jcounter][kcounter]=-1;
 			}
 		}
 	}
 }
 
-int energy_diff(std::vector< std::vector< std::vector<bool> > >& cluster, int i, int j, int k, int ferro)
+int energy_diff(std::vector< std::vector< std::vector<char> > >& cluster, int i, int j, int k, int ferro)
 {
 	int energy = 0, energy1 = 0, energy2 = 0;
 	energy1 += ferro*cluster[i][j][k]*cluster[period(i+1)][j][k];
@@ -40,20 +40,20 @@ int energy_diff(std::vector< std::vector< std::vector<bool> > >& cluster, int i,
 	energy1 += ferro*cluster[i][j][k]*cluster[i][j][period(k+1)];
 	energy1 += ferro*cluster[i][j][k]*cluster[i][j][period(k-1)];
 
-	energy2 += -ferro*cluster[i][j][k]*cluster[period(i+1)][j][k];
-	energy2 += -ferro*cluster[i][j][k]*cluster[period(i-1)][j][k];
-	energy2 += -ferro*cluster[i][j][k]*cluster[i][period(j-1)][k];
-	energy2 += -ferro*cluster[i][j][k]*cluster[i][period(j+1)][k];
-	energy1 += -ferro*cluster[i][j][k]*cluster[i][j][period(k+1)];
-	energy1 += -ferro*cluster[i][j][k]*cluster[i][j][period(k-1)];
+	energy2 -= ferro*cluster[i][j][k]*cluster[period(i+1)][j][k];
+	energy2 -= ferro*cluster[i][j][k]*cluster[period(i-1)][j][k];
+	energy2 -= ferro*cluster[i][j][k]*cluster[i][period(j-1)][k];
+	energy2 -= ferro*cluster[i][j][k]*cluster[i][period(j+1)][k];
+	energy2 -= ferro*cluster[i][j][k]*cluster[i][j][period(k+1)];
+	energy2 -= ferro*cluster[i][j][k]*cluster[i][j][period(k-1)];
 
 	energy = energy1-energy2;
 	return energy;
 }
 
-void flip(std::vector< std::vector< std::vector<bool> > >& cluster, int i, int j, int k)
+void flip(std::vector< std::vector< std::vector<char> > >& cluster, int i, int j, int k)
 {
-	cluster[i][j][k] = !cluster[i][j][k];
+	cluster[i][j][k] = -cluster[i][j][k];
 }
 
 int period(int index)
