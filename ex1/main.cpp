@@ -24,7 +24,7 @@ main () {
 	std::uniform_real_distribution<double> en(0,1);
 	std::uniform_int_distribution<> pos(0,N-1);
 
-	std::vector<std::vector<std::vector<bool>>> cluster(N, std::vector<std::vector<bool>>(N, std::vector<bool>(N)));
+	std::vector< std::vector<std::vector<bool> > > cluster(N, std::vector< std::vector<bool> >(N, std::vector<bool>(N)));
 
 
 
@@ -52,5 +52,4 @@ main () {
 		}
 
 	}
-
 }
