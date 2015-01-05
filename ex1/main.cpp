@@ -27,13 +27,14 @@ main () {
 	std::vector< std::vector<std::vector<char> > > cluster(N, std::vector< std::vector<char> >(N, std::vector<char>(N)));
 
 
-
 	initalize(cluster, seed_occ, p);
-	const int steps = pow(10, 3);
+	Print_lattice (cluster[0], N, N, ImageWidth, ImageHeight, "random1.ppm");
+	
+	const int steps = pow(10, 5);
 	int i,j,k;
 
 ////	 ferromagnetism 1 or -1
-	int ferro = -1;
+	int ferro = 1;
 
 	for(icounter = 0; icounter < steps; icounter++)
 	{
@@ -52,4 +53,5 @@ main () {
 		}
 
 	}
+	Print_lattice (cluster[0], N, N, ImageWidth, ImageHeight, "random2.ppm");
 }

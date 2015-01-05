@@ -2,13 +2,15 @@
 #include<fstream>
 #include <vector>
 
-#define N 100             //Lateral number of cells
+#define N 30             //Lateral number of cells
 #define ImageWidth 1000  //image width
 #define ImageHeight 1000 //image height
 
+char mtz(char index);
+
 using namespace std;
 
-void Print_lattice (std::vector< std::vector<bool> >& vlat, const int &vlx, const int &vly, const int &vwidth, const int &vheight, const char* vfilename="output.ppm")
+void Print_lattice (std::vector< std::vector<char> >& vlat, const int &vlx, const int &vly, const int &vwidth, const int &vheight, const char* vfilename="output.ppm")
 {
   int  i, j, k, l;
   int vw= vwidth/vlx, vh=vheight/vly;
@@ -28,10 +30,20 @@ void Print_lattice (std::vector< std::vector<bool> >& vlat, const int &vlx, cons
       for (k=0; k<vlx; k++)
       {
         for (l=0; l<vw; l++)
-        { out << r[vlat[i][k]] << " " << g[vlat[i][k]] << " " << b[vlat[i][k]] << " ";
+        { out << r[mtz(vlat[i][k])] << " " << g[mtz(vlat[i][k])] << " " << b[mtz(vlat[i][k])] << " ";
         }
       } 
       out << endl;
 
   out.close ();
 }
+
+// change -1 to 0
+char mtz(char index)
+{
+	if(index == 1)
+		return index;
+	else
+		return 0;
+}
+

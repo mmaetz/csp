@@ -2,7 +2,7 @@
 #include <random>
 #include "functions.h"
 #include <iostream>
-#define N 100             //Lateral number of cells
+#define N 30             //Lateral number of cells
 
 void initalize(std::vector< std::vector< std::vector<char> > >& cluster, const int seed, const double p)
 {
