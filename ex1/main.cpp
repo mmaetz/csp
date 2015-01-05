@@ -11,7 +11,7 @@ main () {
 	int icounter;
 	int jcounter;
 
-	double k = 1;
+	double k_phys = 1;
 	double T = 1;
 
 	const int seed_occ = 1;
@@ -24,32 +24,33 @@ main () {
 	std::uniform_real_distribution<double> en(0,1);
 	std::uniform_int_distribution<> pos(0,N-1);
 
-	std::vector< std::vector<bool> > cluster(N, std::vector<bool>(N));
+	std::vector<std::vector<std::vector<bool>>> cluster(N, std::vector<std::vector<bool>>(N, std::vector<bool>(N)));
+
+
 
 	initalize(cluster, seed_occ, p);
-//	Print_lattice (cluster, N, N, ImageWidth, ImageHeight, "random1.ppm");
+	int steps = pow(10, 3);
+	int i,j,k;
 
-	int steps = 3000000;
-	int i,j;
-	// ferromagnetism 1 or -1
+////	 ferromagnetism 1 or -1
 	int ferro = -1;
 
 	for(icounter = 0; icounter < steps; icounter++)
 	{
 		i = pos(gen_pos);
 		j = pos(gen_pos);
-		int this_energy = energy_diff(cluster, i, j, ferro);
+		k = pos(gen_pos);
+		int this_energy = energy_diff(cluster, i, j, k, ferro);
 		if( this_energy < 0 )
-			flip(cluster, i, j);
+			flip(cluster, i, j, k);
 		else
 		{
-			if( std::min(double(1),exp(-double(this_energy)/(k*T))) >= en(gen_en))
+			if( std::min(double(1),exp(-double(this_energy)/(k_phys*T))) >= en(gen_en))
 			{
-				flip(cluster, i, j);
+				flip(cluster, i, j, k);
 			}
 		}
 
 	}
 
-//	Print_lattice (cluster, N, N, ImageWidth, ImageHeight, "random2.ppm");
 }
