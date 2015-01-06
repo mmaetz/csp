@@ -1,8 +1,8 @@
 #include <vector>
 #include <random>
 #include "functions.h"
+#include "defn.h"
 #include <iostream>
-#define N 30             //Lateral number of cells
 
 void initalize(std::vector< std::vector< std::vector<char> > >& cluster, const int seed, const double p)
 {
@@ -30,22 +30,22 @@ void initalize(std::vector< std::vector< std::vector<char> > >& cluster, const i
 	}
 }
 
-int energy_diff(std::vector< std::vector< std::vector<char> > >& cluster, int i, int j, int k, int ferro)
+int energy_diff(std::vector< std::vector< std::vector<char> > >& cluster, int i, int j, int k, int J)
 {
-	int energy = 0, energy1 = 0, energy2 = 0;
-	energy1 += ferro*cluster[i][j][k]*cluster[period(i+1)][j][k];
-	energy1 += ferro*cluster[i][j][k]*cluster[period(i-1)][j][k];
-	energy1 += ferro*cluster[i][j][k]*cluster[i][period(j-1)][k];
-	energy1 += ferro*cluster[i][j][k]*cluster[i][period(j+1)][k];
-	energy1 += ferro*cluster[i][j][k]*cluster[i][j][period(k+1)];
-	energy1 += ferro*cluster[i][j][k]*cluster[i][j][period(k-1)];
+	double energy = 0, energy1 = 0, energy2 = 0;
+	energy1 += J*cluster[i][j][k]*cluster[period(i+1)][j][k];
+	energy1 += J*cluster[i][j][k]*cluster[period(i-1)][j][k];
+	energy1 += J*cluster[i][j][k]*cluster[i][period(j-1)][k];
+	energy1 += J*cluster[i][j][k]*cluster[i][period(j+1)][k];
+	energy1 += J*cluster[i][j][k]*cluster[i][j][period(k+1)];
+	energy1 += J*cluster[i][j][k]*cluster[i][j][period(k-1)];
 
-	energy2 -= ferro*cluster[i][j][k]*cluster[period(i+1)][j][k];
-	energy2 -= ferro*cluster[i][j][k]*cluster[period(i-1)][j][k];
-	energy2 -= ferro*cluster[i][j][k]*cluster[i][period(j-1)][k];
-	energy2 -= ferro*cluster[i][j][k]*cluster[i][period(j+1)][k];
-	energy2 -= ferro*cluster[i][j][k]*cluster[i][j][period(k+1)];
-	energy2 -= ferro*cluster[i][j][k]*cluster[i][j][period(k-1)];
+	energy2 -= J*cluster[i][j][k]*cluster[period(i+1)][j][k];
+	energy2 -= J*cluster[i][j][k]*cluster[period(i-1)][j][k];
+	energy2 -= J*cluster[i][j][k]*cluster[i][period(j-1)][k];
+	energy2 -= J*cluster[i][j][k]*cluster[i][period(j+1)][k];
+	energy2 -= J*cluster[i][j][k]*cluster[i][j][period(k+1)];
+	energy2 -= J*cluster[i][j][k]*cluster[i][j][period(k-1)];
 
 	energy = energy1-energy2;
 	return energy;
@@ -55,6 +55,42 @@ void flip(std::vector< std::vector< std::vector<char> > >& cluster, int i, int j
 {
 	cluster[i][j][k] = -cluster[i][j][k];
 }
+
+int energy_tot(std::vector< std::vector< std::vector<char> > >& cluster, int J)
+{
+	int i, j, k;
+	double energy;
+
+	std::vector< std::vector< std::vector<bool> > > visited(N, std::vector< std::vector<bool> >(N, std::vector<bool>(N)));
+
+  for (i=0; i<N; i++)
+	{
+		for (j=0; j<N; j++) 
+		{
+			for (k=0; k<N; k++) 
+			{
+				visited[i][j][k] = 1;
+				if(!visited[i][j][k])
+					cluster[i][j][k]=1;
+				if(!visited[period(i+1)][j][k]);
+					energy -= J*cluster[i][j][k]*cluster[period(i+1)][j][k];
+				if(!visited[period(i-1)][j][k]);
+					energy -= J*cluster[i][j][k]*cluster[period(i-1)][j][k];
+				if(!visited[i][period(j-1)][k]);
+					energy -= J*cluster[i][j][k]*cluster[i][period(j-1)][k];
+				if(!visited[i][period(j+1)][k]);
+					energy -= J*cluster[i][j][k]*cluster[i][period(j+1)][k];
+				if(!visited[i][j][period(k+1)]);
+					energy -= J*cluster[i][j][k]*cluster[i][j][period(k+1)];
+				if(!visited[i][j][period(k-1)]);
+					energy -= J*cluster[i][j][k]*cluster[i][j][period(k-1)];
+			}
+		}
+	}
+
+	return energy;
+}
+
 
 int period(int index)
 {
@@ -67,3 +103,4 @@ int period(int index)
 			return index;
 	}
 }
+

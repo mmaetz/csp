@@ -1,0 +1,2 @@
+*** Exercise 1 ***
+What J-value? Compare system sizes proportional to number of sweeps?

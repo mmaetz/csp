@@ -1,8 +1,8 @@
 #include<iostream>
 #include<fstream>
 #include <vector>
+#include "defn.h"
 
-#define N 30             //Lateral number of cells
 #define ImageWidth 1000  //image width
 #define ImageHeight 1000 //image height
 

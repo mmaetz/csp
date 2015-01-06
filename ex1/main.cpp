@@ -11,13 +11,14 @@ main () {
 	int icounter;
 	int jcounter;
 
-	double k_phys = 1;
-	double T = 1;
+//	double kb = 8.6173324e-5;
+//	double T = 300;
+	double beta = 1e2;
 
 	const int seed_occ = 1;
 	const int seed_pos = 2;
 	const int seed_en = 3;
-	const double p = 0.6;
+	const double p = 0.5;
 
 	std::mt19937 gen_pos(seed_pos);
 	std::mt19937 gen_en(seed_en);
@@ -30,28 +31,34 @@ main () {
 	initalize(cluster, seed_occ, p);
 	Print_lattice (cluster[0], N, N, ImageWidth, ImageHeight, "random1.ppm");
 	
-	const int steps = pow(10, 5);
+	const int steps = pow(10, 6);
 	int i,j,k;
 
-////	 ferromagnetism 1 or -1
-	int ferro = 1;
+////	 magnetism 1 or -1
+	int J = 1;
+
+	double etot = energy_tot(cluster, J);
+	std::cout << etot << std::endl;
+	double this_energy;
 
 	for(icounter = 0; icounter < steps; icounter++)
 	{
 		i = pos(gen_pos);
 		j = pos(gen_pos);
 		k = pos(gen_pos);
-		int this_energy = energy_diff(cluster, i, j, k, ferro);
-		if( this_energy < 0 )
+		this_energy = energy_diff(cluster, i, j, k, J);
+		if( this_energy <= 0 )
 			flip(cluster, i, j, k);
 		else
 		{
-			if( std::min(double(1),exp(-double(this_energy)/(k_phys*T))) >= en(gen_en))
+			if( std::min(double(1),exp(-double(this_energy)/beta)) >= en(gen_en))
 			{
 				flip(cluster, i, j, k);
 			}
 		}
 
 	}
-	Print_lattice (cluster[0], N, N, ImageWidth, ImageHeight, "random2.ppm");
+	Print_lattice (cluster[5], N, N, ImageWidth, ImageHeight, "random2.ppm");
+	etot = energy_tot(cluster, J);
+	std::cout << etot << std::endl;
 }
