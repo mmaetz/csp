@@ -143,3 +143,18 @@ double metropolis_prob(int energy_diff, const std::vector<double>& list)
 			return list[2];
 	}
 }
+
+void wolff(std::vector< std::vector< std::vector<char> > >& cluster, int i, int j, int k, const int seed)
+{
+	std::vector< std::vector<int> > tovisit;
+	std::mt19937 gen_pos(seed_pos);
+	std::uniform_int_distribution<> pos(0,N-1);
+
+	i = pos(gen_pos);
+	j = pos(gen_pos);
+	k = pos(gen_pos);
+}
+
+void add_neighbor( std::vector< std::vector<int> > tovisit, int i, int j, int k)
+{
+}

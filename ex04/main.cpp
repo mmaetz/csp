@@ -20,10 +20,8 @@ main () {
 	const int seed_en = 3;
 	const double p = 0.5;
 
-	std::mt19937 gen_pos(seed_pos);
 	std::mt19937 gen_en(seed_en);
 	std::uniform_real_distribution<double> en(0,1);
-	std::uniform_int_distribution<> pos(0,N-1);
 
 	std::vector< std::vector< std::vector<char> > > cluster(N, std::vector< std::vector<char> >(N, std::vector<char>(N)));
 
