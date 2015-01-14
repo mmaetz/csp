@@ -146,15 +146,67 @@ double metropolis_prob(int energy_diff, const std::vector<double>& list)
 
 void wolff(std::vector< std::vector< std::vector<char> > >& cluster, int i, int j, int k, const int seed)
 {
-	std::vector< std::vector<int> > tovisit;
+	std::vector< std::vector< std::vector<char> > > tovisit(N, std::vector< std::vector<char> >(N, std::vector<char>(N)));
 	std::mt19937 gen_pos(seed_pos);
 	std::uniform_int_distribution<> pos(0,N-1);
 
 	i = pos(gen_pos);
 	j = pos(gen_pos);
 	k = pos(gen_pos);
+
 }
 
-void add_neighbor( std::vector< std::vector<int> > tovisit, int i, int j, int k)
+std::vector< std::vector<char> > add_neighbor( std::vector< std::vector< std::vector<char> > >& tovisit, int i, int j, int k)
 {
+	std::vector<char> tempvec(3);
+	std::vector< std::vector<char> > list;
+	if(tovisit[period(i+1)][j][k] == 0)
+	{
+		tovisit[period(i+1)][j][k]++;
+		tempvec[0] = i+1;
+		tempvec[1] = j;
+		tempvec[2] = k;
+		list.push_back(tempvec);
+	}
+	if(tovisit[period(i-1)][j][k] == 0)
+	{
+		tovisit[period(i-1)][j][k]++;
+		tempvec[0] = period(i-1);
+		tempvec[1] = j;
+		tempvec[2] = k;
+		list.push_back(tempvec);
+	}
+	if(tovisit[i][period(j+1)][k] == 0)
+	{
+		tovisit[i][period(j+1)][k]++;
+		tempvec[0] = i;
+		tempvec[1] = period(j+1);
+		tempvec[2] = k;
+		list.push_back(tempvec);
+	}
+	if(tovisit[i][period(j-1)][k] == 0)
+	{
+		tovisit[i][period(j-1)][k]++;
+		tempvec[0] = i;
+		tempvec[1] = period(j-1);
+		tempvec[2] = k;
+		list.push_back(tempvec);
+	}
+	if(tovisit[i][j][period(k+1)] == 0)
+	{
+		tovisit[i][j][period(k+1)]++;
+		tempvec[0] = i;
+		tempvec[1] = j;
+		tempvec[2] = period(k+1);
+		list.push_back(tempvec);
+	}
+	if(tovisit[i][j][period(k-1)] == 0)
+	{
+		tovisit[i][j][period(k-1)]++;
+		tempvec[0] = i;
+		tempvec[1] = j;
+		tempvec[2] = period(k-1);
+		list.push_back(tempvec);
+	}
+	return list;
 }
